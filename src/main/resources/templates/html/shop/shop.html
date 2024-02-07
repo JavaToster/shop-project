@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      .main{
+  margin-left: 300px;
+  margin-top: 150px;
+  width: 70%;
+  /* background-color: red; */
+}
+
+.shop-name{
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.categories-scroll{
+  margin-left: 20px;
+  width: 200px;
+  /* background-color: blue; */
+  margin-top: 0px;
+}
+
+.category-name{
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.categories-blocks{
+  margin-left: 250px;
+  margin-top: -227px;
+}
+
+.category-block{
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 30px;
+}
+
+.category-block-img{
+  width:200px;
+  height: 200px;
+  border: 3px solid black;
+  border-radius: 10px;
+}
+
+.search-items{
+  position: absolute;
+  top: 10px;
+  left: 580px;
+  width: 585px;
+}
+
+#search-item{
+  width: 550px;
+  height: 20px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+#search-item-button{
+  position: absolute;
+  left: 570px;
+  width: 80px;
+  height: 25px;
+  border: black solid 2px;
+  border-radius: 10px;
+}
+
+    </style>
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="shop-name">
+        <h1 th:text="${shop.getShopName()}">Магазин</h1>
+      </div>
+      <div class="categories-scroll">
+        <h2>Категории</h2>
+        <h3 class="category-name" th:each="category: ${categories}" th:text="${category.getCategoryName()}"></h3>
+      </div>
+      <div class="categories-blocks">
+        <div class="category-block" th:each="category: ${categories}">
+          <img class="category-block-img" th:src="${category.getImageUrl()}" alt="Упс" style="margin-top: 105px;">
+          <a style="margin-left: 60px; font-size: 21px; text-decoration: none; color: #000;" th:text="${category.getCategoryName()}" th:href="@{/shop/{shopId}/category/{categoryId} (shopId=${shop.getId()}, categoryId=${category.getId()})}"></a>
+        </div>
+      </div>
+    </div>
+    <div class="search-items">
+      <form th:method="POST" th:action="@{/shop/search}">
+        <input type="text" name="search-text" placeholder="   Найти товар" id="search-item">
+        <input type="submit" value="Искать" id="search-item-button">
+      </form>
+    </div>
+  </body>
+</html>

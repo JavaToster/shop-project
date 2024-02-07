@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/editItem.css}">
+  </head>
+  <body>
+    <div class="main">
+      <div class="image">
+        <img th:src="@{/images/{imageName} (imageName=${item.getImageName()})}" alt="" id="item-image">
+      </div>
+      <div class="description">
+        <form th:method="POST" th:action="@{/shop/item/{id}/edit (id=${id})}" th:object="${item}">
+          <input type="text" th:field="*{itemName}" th:value="${item.getItemName()}" id="item-name">
+          <br>
+          <textarea rows="6" cols="60" id="item-description" th:field="*{itemDescription}" th:text="${item.getItemDescription()}"></textarea>
+          <br>
+          <input type="text" th:field="*{price}" th:value="${item.getPrice()}" id="item-price">
+          <br>
+          <input type="submit" name="" value="Изменить" id="edit">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/showItem.css}">
+  </head>
+  <body>
+    <div class="main">
+      <div class="image">
+        <img th:src="@{/images/{imageName} (imageName=${item.getImageName()})}" alt="" id="item-image" style="border: 1px solid black; border-radius: 10px;">
+      </div>
+      <div class="description">
+        <div class="item-name">
+          <h2 class="item-name" th:text="${item.getItemName()}"/>
+        </div>
+        <div class="another-item-fields">
+          <h2 class="item-description" th:text="${item.getItemDescription()}"/>
+          <h2 class="item-price" th:text="${item.getPrice()}">Price</h2>
+        </div>
+        <div class="action-with-item">
+          <form action="../index.html" method="post">
+            <input id="add-item-to-basket" type="submit" name="" value="Добавить в корзину">
+          </form>
+          <form action="../index.html" method="post">
+            <input id="buy-item-now" type="submit" name="" value="Купить сейчас">
+          </form>
+        </div>
+      </div>
+      <div class="date-of-add" style="backgroud-color:white; border: 2px solid black; border-radius: 10px; width: 168px; margin-top:-400px;">
+        <p style="margin-bottom: 0px; font-weight: 800">Дата добавления:</p>
+        <p th:text="${date}">26.01.2024</p>
+      </div>
+      <div class="comments">
+        <h2>Коментарии</h2>
+        <div class="comment" th:each="comment: ${comments}" th:text="${comment.getText()}">
+
+        </div>
+      </div>
+      <div class="add-comment-div">
+        <form th:method="POST" th:action="@{/shop/item/{id}/add-comment (id=${item.getId()})}" th:object="${comment}">
+          <textarea th:field="*{text}" id="comment-input" cols="50" rows="3" placeholder="Введите коментарий"></textarea>
+          <br>
+          <input type="submit" value="Добавить" id="add-comment-button">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

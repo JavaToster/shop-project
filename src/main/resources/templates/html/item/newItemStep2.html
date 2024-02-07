@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/newItemStep2.css}">
+  </head>
+  <body>
+    <form th:method="POST" th:action="@{/shop/{id}/add-item-step-2?item-id={itemId}(id=${shop_id}, itemId=${item_id})}">
+      <select th:field="*{id}" th:object="${category}" >
+        <option th:each="category: ${categories}" th:value="${category.getId()}" th:text="${category.getCategoryName()}">Category 1</option>
+      </select>
+      <br>
+      <input type="submit" value="Далее">
+    </form>
+  </body>
+</html>

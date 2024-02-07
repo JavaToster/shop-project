@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/shop/{shopId}/add-item-step-3?item-id={itemId} (itemId=${itemId}, shopId=${shopId})}" method="POST" enctype="multipart/form-data">
+    <input type="file" name="image">
+    <input type="submit" value="Upload">
+</form>
+</body>
+<script>
+    function sendFile() {
+ const fileInput = document.getElementById('image');
+const file = fileInput.files[0];
+
+const formData = new FormData();
+formData.append('file', file);
+
+const xhr = new XMLHttpRequest();
+xhr
+xhr.open('POST', '/upload', true);
+xhr.send(formData);
+}
+</script>
+</html>

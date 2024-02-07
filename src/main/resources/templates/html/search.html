@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+  </head>
+  <body>
+    <div class="main">
+      <h2 style="margin-left: 600px; margin-top: 150px;" th:text="${text}"/>
+      <div class="category-scroll">
+        <h2 id="category-text">Категория</h2>
+        <form th:method="POST" th:action="@{/shop/redirect-to-categories}">
+        <label for="category-select" id="category-select-label">Выберите категорию:</label>
+        <br>
+        <select id="category-select" th:object="${category}" th:field="*{id}">
+          <option class="category-select-options" th:each="category: ${categories}" th:text="${category.getCategoryName()}" th:value="${category.getId()}"></option>
+                </select>
+  <!--      <div th:each="category: ${categories}" style="margin-rigth:0px;">-->
+  <!--        <a id="category-select" class="category-select-options" th:text="${category.getCategoryName()}" th:href="@{/shop/category/{category_id} (category_id=${category.getId()})}" style="text-decoration: none; color: #000;"></a>-->
+  <!--        <br style="margin-bottom: 10px;">-->
+  <!--      </div>-->
+        <input type="submit" value="Выбрать" id="sumbit-select">
+      </form>
+      </div>
+      <div class="items" style="margin-left: 560px;">
+        <div class="item" th:each="item: ${items}">
+          <img th:src="@{/images/{imageName} (imageName=${item.getImageName()})}" alt=" че то не то" class="item-img">
+          <div class="item-information-block">
+          <a th:href="@{/shop/{shop_id}/{id} (shop_id=${item.getShop().getId()}, id=${item.getId()})}" class="item-title" th:text="${item.getItemName()}" style="font-size: 21px; text-decoration: none; color: #000;"/>
+          <div class="item-description-div">
+            <p class="item-description" th:text="${item.getItemDescription()}"/>
+          </div>
+          <p class="price" th:text="${item.getPrice()}" style="margin-left: 270px; font-size: 21px; margin-top: -30px;"></p>
+          <p class="item-shop-name" th:text="${item.getShop().getShopName()}"/>
+          </div>
+        </div>
+      </div>
+      <div class="search-items">
+        <form th:method="POST" th:action="@{/shop/search}">
+          <input type="text" name="search-text" placeholder="   Найти товар" id="search-item">
+          <input type="submit" value="Искать" id="search-item-button">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

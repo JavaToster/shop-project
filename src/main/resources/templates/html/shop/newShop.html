@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/newShop.css}">
+  </head>
+  <body>
+    <div class="main">
+      <h2>Новый продавец</h2>
+      <div class="new-shop-fields">
+        <form th:method="PATCH" th:action="@{/shop/new}" th:object="${shop}">
+          <label for="shop-name" class="labels">Название магазина:</label>
+          <input type="text" id="shop-name" class="inputs" th:field="*{shopName}">
+
+          <label for="shop-description" id="textarea-label">Описание магазина:</label>
+          <textarea id="shop-description" rows="8" cols="80" class="textareas" th:field="*{shopDescription}"></textarea>
+
+          <label for="country" class="labels" style="margin-right: 14px;">Страна поставщика:</label>
+          <input type="text" id="country" class="inputs" th:field="*{country}">
+
+          <input type="submit" value="Создать" id="send-new-shop">
+        </form>
+
+      </div>
+    </div>
+    <div class="back">
+      <button type="button" name="button" id="back-button">Back</button>
+    </div>
+  </body>
+</html>

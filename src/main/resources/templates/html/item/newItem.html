@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/newItem.css}">
+  </head>
+  <body>
+    <div class="main">
+      <h2>Новый товар</h2>
+      <div class="new-item-fields">
+          <form th:method="POST" th:action="@{/shop/{id}/add-item-step-1(id=${shop_id})}" th:object="${item}">
+          <label for="item-name" class="labels" style="margin-right: 45px;">Название товара:</label>
+          <input type="text" id="item-name" class="inputs" th:field="*{itemName}">
+
+          <label for="item-description" id="textarea-label">Описание товара:</label>
+          <textarea id="item-description" rows="8" cols="80" class="textareas" th:field="*{itemDescription}"></textarea>
+
+          <label for="item-price" class="labels" style="margin-right: 45px; margin-left: 100px;">Цена:</label>
+          <input type="text" id="item-price" class="inputs" th:field="*{price}">
+
+          <input type="submit" value="Добавить" id="add-new-item">
+        </form>
+      </div>
+    </div>
+    <div class="back">
+      <button type="button" name="button" id="back-button">Back</button>
+    </div>
+  </body>
+</html>
