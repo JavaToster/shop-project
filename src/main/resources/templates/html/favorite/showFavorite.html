@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title>Избранное</title>
+    <link rel="stylesheet" href="../static/css/favorite/showFavorite.css" th:href="@{/css/favorite/showFavorite.css}">
+  </head>
+  <body>
+    <div class="main">
+      <h2 style="position: absolute; left: 400px; top: 180px;">Избранное</h2>
+      <div class="items">
+        <div class="item" th:each="item: ${items}">
+          <div class="item-img">
+            <img th:src="@{/images/item/{imageName} (imageName=${item.getImageName()})}" alt="error" id="img">
+          </div>
+          <div class="item-infomation-block">
+            <a th:href="@{/shop/item/{id} (id=${item.getId()})}" class="item-title" href="some-item" th:text="${item.getItemName()}">Title</a>
+            <div class="item-description-div">
+              <p th:text="${item.getItemDescription()}" class="item-description">Some description</p>
+            </div>
+            <p th:text="${item.getPrice()}" style="margin-left: 270px; font-size: 21px;" class="price">689990</p>
+            <p th:text="${item.getShop().getShopName()}" th:href="@{/shop/{shopId} (shopId=${item.getShop().getId()})}" class="item-shop-name">DNS</p>
+          </div>
+        </div>
+      </div>
+      <div class="search-items">
+        <form class="" action="index.html" method="post">
+          <input id="search-item"type="text" name="" value="">
+          <input type="submit" name="" value="Искать" id="search-item-button">
+        </form>
+      </div>
+      <button class="favorite-button" onclick="window.open('/shop/1/favorite', '_self')">
+        <span class="heart"></span>
+      </button>
+      <button class="basket-button" onclick="window.open('/shop/1/basket', '_self')">
+        <span class="basket"></span>
+      </button>
+    </div>
+  </body>
+</html>

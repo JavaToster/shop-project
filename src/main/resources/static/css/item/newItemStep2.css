@@ -1,0 +1,15 @@
+select{
+  margin-left: 800px;
+  margin-top: 350px;
+  font-size: 21px;
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+input{
+  border: 2px solid black;
+  border-radius: 12px;
+  width: 70px;
+  height: 25px;
+  margin-left: 800px;
+}

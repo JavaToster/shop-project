@@ -1,0 +1,32 @@
+.center-div{
+  display: flex;
+  width: 39.5%;
+  margin-top: 200px;
+  margin-left: 500px;
+}
+
+#profile-photo{
+  width: 125px;
+  height: 125px;
+  border-radius: 200px;
+}
+
+#username{
+  margin-left: 40px;
+}
+
+a{
+  margin: 10px;
+  font-size: 18px;
+  text-decoration: none;
+  color: #000;
+}
+
+a:hover{
+  color: red;
+}
+
+.buttons{
+  margin-top: 60px;
+  margin-left: -113px;
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../static/css/account/showAccount.css" th:href="@{/css/account/showAccount.css}">
+  </head>
+  <body>
+    <div class="center-div">
+      <img th:src="@{/images/user/{imageName} (imageName=${user.getImageName()})}" alt="OOOOOps" id="profile-photo">
+      <h2 id="username" th:text="${user.getUsername()}">Username</h2>
+      <div class="buttons">
+        <a th:href="@{/person/basket}" id="basket">showBasket</a>
+        <a th:href="@{/person/favorite}" id="favorite">showFavorite</a>
+        <a th:href="@{/person/changePassword?part=304}" id="change-password">change password</a>
+        <a th:href="@{/person/delete}" id="delete-account">delete account</a>
+        <form th:action="@{/auth/logout}" th:method="POST">
+          <input type="submit" value="logout">
+        </form>
+        <a th:href="@{/person/create-a-shop}">Create a shop</a>
+      </div>
+    </div>
+  </body>
+</html>

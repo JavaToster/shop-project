@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="../static/css/basket/showBasket.css" th:href="@{/css/basket/showBasket.css}">
+  </head>
+  <body>
+    <div class="main">
+      <h2 style="position: absolute; left: 400px; top: 180px;">Корзина</h2>
+      <div class="items">
+        <div class="item" th:each="item: ${items}">
+          <div class="item-img">
+            <img th:src="@{/images/item/{imageName} (imageName=${item.getImageName()})}" alt="че то не то" class="img">
+          </div>
+          <div class="item-infomation-block">
+            <a th:href="@{/shop/item/{id} (id=${item.getId()})}" class="item-title" href="some-item" th:text="${item.getItemName()}"></a>
+            <div class="item-description-div">
+              <p th:text="${item.getItemDescription()}" class="item-description">Some description</p>
+            </div>
+            <p class="price" th:text="${item.getPrice()}" style="margin-left: 270px; font-size: 21px;">689990</p>
+            <a class="item-shop-name" th:text="${item.getShop().getShopName()}" th:href="@{/shop/{shopId} (shopId=${item.getShop().getId()})}">DNS</a>
+          </div>
+        </div>
+      </div>
+      <div class="search-items">
+        <form class="" action="index.html" method="post">
+          <input id="search-item"type="text" name="" value="">
+          <input type="submit" name="" value="Искать" id="search-item-button">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

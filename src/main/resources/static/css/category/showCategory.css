@@ -1,0 +1,85 @@
+.category-scroll{
+margin-left: 250px;
+margin-top: 225px;
+}
+
+#category-text{
+margin-bottom: 10px;
+}
+
+#category-select-label{
+font-size: 23px;
+}
+
+#category-select{
+font-size: 20px;
+}
+
+#sumbit-select{
+font-size: 16px;
+}
+
+.items{
+margin-left: 550px;
+margin-top: -128px;
+}
+
+.item-img{
+width: 250px;
+height: 250px;
+margin-right: 0px;
+}
+
+.item-title{
+margin-left: 270px;
+}
+
+.item-description{
+margin-left: 270px;
+margin-top: -2px;
+margin-bottom: 100px;
+font-size: 21px;
+word-wrap: break-word;;
+}
+
+.item-shop-name{
+margin-left: 270px;
+font-size: 21px;
+}
+
+.item{
+margin-bottom: 40px;
+}
+
+.search-items{
+position: absolute;
+top: 10px;
+left: 580px;
+width: 585px;
+}
+
+#search-item{
+width: 550px;
+height: 20px;
+border: 2px solid black;
+border-radius: 10px;
+}
+
+#search-item-button{
+position: absolute;
+left: 570px;
+width: 80px;
+height: 25px;
+border: black solid 2px;
+border-radius: 10px;
+}
+
+.item-description-div{
+width: 700px;
+height: 200px;
+margin-bottom: -70px;
+}
+
+.item-information-block{
+  margin-top: -245px;
+}
