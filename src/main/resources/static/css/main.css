@@ -89,3 +89,63 @@
     height: 250px;
     margin-right: 0px;
 }
+.favorite-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    left: 800px;
+    top: -7px;
+}
+
+.heart {
+    display: inline-block;
+    width: 50px;
+    height: 30px;
+    background-image: url("https://www.pngall.com/wp-content/uploads/4/Heart-Symbol-PNG.png"); /* Replace with your heart icon */
+    background-size: cover;
+    vertical-align: middle;
+}
+
+.favorite-button:hover .heart {
+    background-image: url("https://www.pngall.com/wp-content/uploads/4/Heart-Symbol-PNG.png"); /* Replace with your active heart icon */
+}
+
+.basket-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    left: 900px;
+    top: -15px;
+}
+
+.basket {
+    display: inline-block;
+    width: 50px;
+    height: 40px;
+    background-image: url("https://webstockreview.net/images/grocery-clipart-grocery-item-13.png"); /* Replace with your heart icon */
+    background-size: cover;
+    vertical-align: middle;
+}
+
+.basket-button:hover .basket {
+    background-image: url("https://webstockreview.net/images/grocery-clipart-grocery-item-13.png"); /* Replace with your active heart icon */
+}
+
+a:hover{
+  color: red;
+}
+
+#profile{
+    font-size: 25px;
+    margin-left: 900px;
+    margin-top: -20px;
+    text-decoration: none;
+    color: black;
+    position: absolute;
+    top: 20px;
+    left: 270px;
+}

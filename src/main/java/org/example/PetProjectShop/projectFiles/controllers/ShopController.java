@@ -1,6 +1,7 @@
 package org.example.PetProjectShop.projectFiles.controllers;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.example.PetProjectShop.projectFiles.models.Category;
 import org.example.PetProjectShop.projectFiles.models.Comment;
 import org.example.PetProjectShop.projectFiles.models.Item;
@@ -9,6 +10,7 @@ import org.example.PetProjectShop.projectFiles.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,14 +53,14 @@ public class ShopController  {
     }
 
     @GetMapping({"", "/"})
-    public String mainWindow(Model model, Principal principal, HttpServletResponse httpServletResponse) {
+    public String mainWindow(Model model, Principal principal, HttpServletResponse response) {
         model.addAttribute("items", itemService.findAllItems());
         model.addAttribute("categories", categoryService.findAllCategories());
         model.addAttribute("category", new Category());
         model.addAttribute("item", new Item());
 
-        personService.addCookieId(httpServletResponse, principal.getName());
-
+        personService.deleteCookies(response);
+        personService.addCookieId(response, principal.getName());
 
         return "/html/main";
     }
@@ -71,7 +73,12 @@ public class ShopController  {
     }
 
     @PostMapping({"/{id}/add-item-step-1", "/{id}/add-item-step-1/" })
-    public String addItemPostStepOne(@PathVariable("id") int id, @ModelAttribute("item") Item item, Model model) {
+    public String addItemPostStepOne(@PathVariable("id") int id, @ModelAttribute("item") @Valid  Item item, BindingResult bindingResult, Model model) {
+
+        if(bindingResult.hasErrors()){
+            return "/html/item/newItem";
+        }
+
         item.setId(0);
 
         int indexItemInCash = itemService.addToCashStep1(item);
@@ -104,26 +111,13 @@ public class ShopController  {
         return "redirect:/shop/";
     }
 
-    @GetMapping({"/new", "/new/"})
-    public String newShop(Model model) {
-        model.addAttribute("shop", new Shop());
-
-        return "/html/shop/newShop";
-    }
-
-    @PatchMapping({"/new", "/new/"})
-    public String newShopPatch(@ModelAttribute("shop") Shop shop) {
-        shopService.add(shop);
-
-        return "redirect:/shop/";
-    }
-
     @GetMapping({"/{id}", "/{id}/"})
-    public String showShop(@PathVariable("id") int id, Model model) {
-        model.addAttribute("shop", shopService.findById(id));
+    public String showShop(@PathVariable("id") int id, Model model, @CookieValue("username") String username) {
         model.addAttribute("categories", categoryService.findCategoriesByShopId(id));
         model.addAttribute("items", itemService.findItemByShop(id));
         model.addAttribute("category", new Category());
+        model.addAttribute("shop", shopService.findById(id));
+        model.addAttribute("isOwner", personService.isOwner(shopService.findById(id).getPerson().getUsername(), username));
 
         return "/html/shop/shop";
     }
@@ -195,6 +189,10 @@ public class ShopController  {
 
     @PostMapping({"/item/{itemId}/add-comment", "/item/{itemId}/add-comment/"})
     public String addComment(@PathVariable("itemId") int itemId, @ModelAttribute("comment") Comment comment) {
+        if(comment.getText().isEmpty()){
+            return "redirect:/shop/item/"+itemId+"/";
+        }
+
         commentService.addComment(itemId, comment);
 
         return "redirect:/shop/item/" + itemId;

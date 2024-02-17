@@ -1,8 +1,6 @@
 package org.example.PetProjectShop.projectFiles.repositories;
 
-import org.example.PetProjectShop.projectFiles.models.Item;
-import org.example.PetProjectShop.projectFiles.models.Shop;
-import org.example.PetProjectShop.projectFiles.models.Category;
+import org.example.PetProjectShop.projectFiles.models.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +18,8 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findByItemNameLike(@Param("itemName") String itemName);
 
     List<Item> findByShopAndCategory(Shop shop, Category category);
+
+    List<Item> findByBaskets(Basket basket);
+
+    List<Item> findByFavorites(Favorite favorite);
 }

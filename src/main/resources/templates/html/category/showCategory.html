@@ -106,15 +106,15 @@
       <div class="items" style="margin-left: 560px;">
         <div class="item" th:each="item: ${items}">
           <div class="img-div">
-            <img th:src="@{/images/{imageName} (imageName=${item.getImageName()})}" alt=" че то не то" class="item-img">
+            <img th:src="@{/images/item/{imageName} (imageName=${item.getImageName()})}" alt=" че то не то" class="item-img">
           </div>
           <div class="item-information-block">
-          <a th:href="@{/shop/item/{id} (id=${item.getId()})}" class="item-title" th:text="${item.getItemName()}" style="font-size: 21px; text-decoration: none; color: #000;"/>
-          <div class="item-description-div">
-            <p class="item-description" th:text="${item.getItemDescription()}"/>
-          </div>
-          <p class="price" th:text="${item.getPrice()}" style="margin-left: 270px; font-size: 21px; margin-top: -30px;"></p>
-          <p class="item-shop-name" th:text="${item.getShop().getShopName()}"/>
+            <a th:href="@{/shop/item/{id} (id=${item.getId()})}" class="item-title" th:text="${item.getItemName()}" style="font-size: 21px; text-decoration: none; color: #000;"/>
+            <div class="item-description-div">
+              <p class="item-description" th:text="${item.getItemDescription()}"/>
+            </div>
+            <p class="price" th:text="${item.getPrice()}" style="margin-left: 270px; font-size: 21px; margin-top: -30px;"></p>
+            <p class="item-shop-name" th:text="${item.getShop().getShopName()}"/>
           </div>
         </div>
       </div>

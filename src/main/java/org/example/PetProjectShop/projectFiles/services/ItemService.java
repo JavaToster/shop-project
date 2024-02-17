@@ -23,9 +23,20 @@ public class ItemService {
     private ItemRepository itemRepository;
     private ShopRepository shopRepository;
     private CategoryRepository categoryRepository;
+    private BasketRepository basketRepository;
     private List<Item> itemsCash = new ArrayList<>();
-
     private JdbcTemplate jdbcTemplate;
+    private FavoriteRepository favoriteRepository;
+
+    @Autowired
+    public void setFavoriteRepository(FavoriteRepository favoriteRepository) {
+        this.favoriteRepository = favoriteRepository;
+    }
+
+    @Autowired
+    public void setBasketRepository(BasketRepository basketRepository) {
+        this.basketRepository = basketRepository;
+    }
 
     @Autowired
     public void setItemRepository(ItemRepository itemRepository) {
@@ -82,7 +93,7 @@ public class ItemService {
     }
 
     public void addCToCashStep3(int id, MultipartFile file){
-        String path = "C:/Java/PetProjectShop/src/main/resources/static/images/";
+        String path = "C:/Java/PetProjectShop/src/main/resources/static/images/item/";
         String fileName = file.getOriginalFilename();
         int dotIndex = fileName.lastIndexOf(".");
         String imageName = (getLastImageId()+1)+fileName.substring(dotIndex);
@@ -135,5 +146,17 @@ public class ItemService {
                 return rs.getInt("id");
             }
         }).stream().findAny().orElse(0);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Item> findItemsByBasketId(int basketId){
+        System.out.println(basketRepository.findById(basketId).orElse(null));
+
+        return itemRepository.findByBaskets(basketRepository.findById(basketId).orElse(null));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Item> findItemsByFavoriteId(int favoriteId){
+        return itemRepository.findByFavorites(favoriteRepository.findById(favoriteId).orElse(null));
     }
 }

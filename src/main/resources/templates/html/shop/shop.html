@@ -96,6 +96,10 @@
         <input type="text" name="search-text" placeholder="   Найти товар" id="search-item">
         <input type="submit" value="Искать" id="search-item-button">
       </form>
+
+      <div th:if="${isOwner}" style="margin-left: 800px; margin-top: -20px; width: 200px;">
+        <a th:href="@{/shop/{id}/add-item (id=${shop.getId()})}" style="text-decoration: none; color: black;">Add item</a>
+      </div>
     </div>
   </body>
 </html>

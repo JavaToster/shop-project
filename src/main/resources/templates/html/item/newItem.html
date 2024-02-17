@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" th:href="@{/css/newItem.css}">
+    <link rel="stylesheet" th:href="@{/css/item/newItem.css}">
   </head>
   <body>
     <div class="main">
@@ -11,10 +11,12 @@
       <div class="new-item-fields">
           <form th:method="POST" th:action="@{/shop/{id}/add-item-step-1(id=${shop_id})}" th:object="${item}">
           <label for="item-name" class="labels" style="margin-right: 45px;">Название товара:</label>
-          <input type="text" id="item-name" class="inputs" th:field="*{itemName}">
+          <input type="text" id="item-name" class="inputs" th:field="*{itemName}" th:value="${item.getItemName()}">
+          <div style="color: red;" th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}"></div>
 
           <label for="item-description" id="textarea-label">Описание товара:</label>
-          <textarea id="item-description" rows="8" cols="80" class="textareas" th:field="*{itemDescription}"></textarea>
+          <textarea id="item-description" rows="8" cols="80" class="textareas" th:field="*{itemDescription}" th:value="${item.getItemDescription()}"></textarea>
+          <div style="color: red;" th:if="${#fields.hasErrors('itemDescription')}" th:errors="*{itemDescription}"></div>
 
           <label for="item-price" class="labels" style="margin-right: 45px; margin-left: 100px;">Цена:</label>
           <input type="text" id="item-price" class="inputs" th:field="*{price}">

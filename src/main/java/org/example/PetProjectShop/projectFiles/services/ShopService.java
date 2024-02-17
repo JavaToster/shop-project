@@ -16,6 +16,7 @@ public class ShopService {
 
     private ShopRepository shopRepository;
     private CategoryRepository categoryRepository;
+    private PersonRepository personRepository;
 
     @Autowired
     public void setShopRepository(ShopRepository shopRepository) {
@@ -27,12 +28,19 @@ public class ShopService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Autowired
+    public void setPersonRepository(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
     public Shop findById(int id){
         return shopRepository.findById(id).orElse(null);
     }
 
     @Transactional
-    public void add(Shop shop){
+    public void add(int personId, Shop shop){
+        shop.setPerson(personRepository.findById(personId).orElse(null));
+
         shopRepository.save(shop);
     }
 

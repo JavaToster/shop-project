@@ -25,7 +25,7 @@
       </div>
       <div class="items" style="margin-left: 560px;">
         <div class="item" th:each="item: ${items}">
-          <img th:src="@{/images/{imageName} (imageName=${item.getImageName()})}" alt=" че то не то" class="item-img">
+          <img th:src="@{/images/item/{imageName} (imageName=${item.getImageName()})}" alt=" че то не то" class="item-img">
           <div class="item-information-block">
           <a th:href="@{/shop/{shop_id}/{id} (shop_id=${item.getShop().getId()}, id=${item.getId()})}" class="item-title" th:text="${item.getItemName()}" style="font-size: 21px; text-decoration: none; color: #000;"/>
           <div class="item-description-div">

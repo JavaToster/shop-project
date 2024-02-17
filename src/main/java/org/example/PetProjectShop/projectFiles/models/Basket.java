@@ -16,7 +16,7 @@ public class Basket {
     @JoinColumn(name = "owner_id")
     private Person owner;
 
-    @ManyToMany(mappedBy = "baskets")
+    @ManyToMany(mappedBy = "baskets", cascade = CascadeType.REMOVE)
     private List<Item> items;
 
     public int getId() {

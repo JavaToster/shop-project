@@ -1,7 +1,8 @@
 package org.example.PetProjectShop.projectFiles.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Fetch;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.List;
@@ -16,9 +17,13 @@ public class Item {
     private int id;
 
     @Column(name = "item_name")
+    @NotEmpty(message = "name not should to be is empty")
+    @Size(min = 2, max = 100, message = "min - 2, max - 100 characters")
     private String itemName;
 
     @Column(name = "item_description")
+    @NotEmpty(message = "description not should to be is empty")
+    @Size(min = 1, max = 1500, message = "min - 100, max - 1500 characters")
     private String itemDescription;
 
     @Column(name = "price")
@@ -44,16 +49,16 @@ public class Item {
 
     @ManyToMany
     @JoinTable(
-            name = "basket_id",
-            joinColumns = @JoinColumn(name = "basket_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
+            name = "basket_item",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "basket_id")
     )
     private List<Basket> baskets;
 
     @ManyToMany
     @JoinTable(name = "favorite_item",
-    joinColumns = @JoinColumn(name = "favorite_id"),
-    inverseJoinColumns = @JoinColumn(name = "item_id"))
+    joinColumns = @JoinColumn(name = "item_id"),
+    inverseJoinColumns = @JoinColumn(name = "favorite_id"))
     private List<Favorite> favorites;
 
     public String getItemName() {

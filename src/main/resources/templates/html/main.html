@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Магазин</title>
-  <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}">
+   <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}">
 </head>
 <body>
   <div class="main">
@@ -22,7 +22,7 @@
     <div th:if="${items.size() != 0}" class="items" style="margin-left: 560px;">
       <div class="item" th:each="item: ${items}">
         <div class="img-div">
-          <img th:src="@{/images/{imageName} (imageName=${item.getImageName()})}" alt=" че то не то" class="item-img" style="border: 1px solid black; border-radius: 10px;">
+          <img th:src="@{/images/item/{imageName} (imageName=${item.getImageName()})}" alt=" че то не то" class="item-img" style="border: 1px solid black; border-radius: 10px;">
         </div>
         <div class="item-information-block">
         <a th:href="@{/shop/item/{id} (id=${item.getId()})}" class="item-title" th:text="${item.getItemName()}" style="font-size: 21px; text-decoration: none; color: #000"/>
@@ -39,6 +39,15 @@
         <input type="text" name="search-text" placeholder="   Найти товар" id="search-item">
         <input type="submit" value="Искать" id="search-item-button">
       </form>
+
+      <button class="favorite-button" onclick="window.open('/person/showCookieFavorite', '_self')">
+        <span class="heart"></span>
+      </button>
+      <button class="basket-button" onclick="window.open('/person/showCookieBasket', '_self')">
+        <span class="basket"></span>
+      </button>
+
+      <a id="profile" href="/person" style="font-size: 25px; margin-left: 900px; margin-top: -20px; text-decoration: none; color: black;">Профиль</a>
     </div>
   </div>
 
