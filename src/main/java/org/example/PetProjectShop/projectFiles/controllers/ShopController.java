@@ -26,6 +26,7 @@ public class ShopController  {
     private ShopService shopService;
     private CommentService commentService;
     private PersonService personService;
+    private ChatService chatService;
 
     @Autowired
     public void setItemService(ItemService itemService) {
@@ -50,6 +51,11 @@ public class ShopController  {
     @Autowired
     public void setPersonService(PersonService personService) {
         this.personService = personService;
+    }
+
+    @Autowired
+    public void setChatService(ChatService chatService) {
+        this.chatService = chatService;
     }
 
     @GetMapping({"", "/"})
@@ -118,6 +124,7 @@ public class ShopController  {
         model.addAttribute("category", new Category());
         model.addAttribute("shop", shopService.findById(id));
         model.addAttribute("isOwner", personService.isOwner(shopService.findById(id).getPerson().getUsername(), username));
+        model.addAttribute("userUsername", username);
 
         return "/html/shop/shop";
     }
@@ -196,5 +203,14 @@ public class ShopController  {
         commentService.addComment(itemId, comment);
 
         return "redirect:/shop/item/" + itemId;
+    }
+
+    @PostMapping("/{shopId}/create-new-chat")
+    public String createNewChat(@PathVariable("shopId") int shopId, @RequestParam("username") String username) throws InterruptedException {
+        chatService.createNewChat(shopId, username);
+
+        Thread.sleep(1000);
+
+        return "redirect:/chat/"+chatService.getLastChatId()+"/";
     }
 }

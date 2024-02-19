@@ -97,6 +97,13 @@
         <input type="submit" value="Искать" id="search-item-button">
       </form>
 
+      <div th:if="${!isOwner}">
+        <form th:method="POST" th:action="@{/shop/{shopId}/create-new-chat?username={username} (shopId=${shop.getId()}, username=${userUsername})}">
+<!--          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
+          <input type="submit" value="Написать продавцу">
+        </form>
+      </div>
+
       <div th:if="${isOwner}" style="margin-left: 800px; margin-top: -20px; width: 200px;">
         <a th:href="@{/shop/{id}/add-item (id=${shop.getId()})}" style="text-decoration: none; color: black;">Add item</a>
       </div>

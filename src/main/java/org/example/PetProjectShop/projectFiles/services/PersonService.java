@@ -3,12 +3,8 @@ package org.example.PetProjectShop.projectFiles.services;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.PetProjectShop.projectFiles.models.Basket;
-import org.example.PetProjectShop.projectFiles.models.Favorite;
-import org.example.PetProjectShop.projectFiles.models.Person;
-import org.example.PetProjectShop.projectFiles.repositories.BasketRepository;
-import org.example.PetProjectShop.projectFiles.repositories.FavoriteRepository;
-import org.example.PetProjectShop.projectFiles.repositories.PersonRepository;
+import org.example.PetProjectShop.projectFiles.models.*;
+import org.example.PetProjectShop.projectFiles.repositories.*;
 import org.example.PetProjectShop.projectFiles.security.PersonDetails;
 import org.example.PetProjectShop.projectFiles.util.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +31,8 @@ public class PersonService implements UserDetailsService {
     private PersonRepository personRepository;
     private BasketRepository basketRepository;
     private FavoriteRepository favoriteRepository;
+    private ChatOwnerRepository chatOwnerRepository;
+    private ChatRepository chatRepository;
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -53,6 +53,16 @@ public class PersonService implements UserDetailsService {
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    public void setChatOwnerRepository(ChatOwnerRepository chatOwnerRepository) {
+        this.chatOwnerRepository = chatOwnerRepository;
+    }
+
+    @Autowired
+    public void setChatRepository(ChatRepository chatRepository) {
+        this.chatRepository = chatRepository;
     }
 
     @Override
@@ -170,4 +180,48 @@ public class PersonService implements UserDetailsService {
     public int getIdByUsername(String username){
         return personRepository.findByUsername(username).orElse(null).getId();
     }
+
+    @Transactional(readOnly = true)
+    public List<Message> findMessagesByChatOfPerson(int chatId){
+        return chatRepository.findById(chatId).orElse(null).getMessages();
+    }
+
+//    @Transactional(readOnly = true)
+//    public ChatOwner findChatOwnerByChatId(int chatId, List<ChatOwner> owners){
+//        for(ChatOwner owner: owners){
+//            if(owner.getChat().getId() == chatId){
+//                return owner;
+//            }
+//        }
+//    }
+
+    @Transactional
+    public boolean hasChat(String username, int chatId){
+        Person person = personRepository.findByUsername(username).orElse(null);
+
+        for(Chat chat: person.getChats()){
+            if(chatId == chat.getId()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Chat> findChatsByUsername(String username){
+        Person person = personRepository.findByUsername(username).orElse(null);
+
+        return person.getChats();
+    }
+
+//    private List<Chat> findChatsByOwners(List<ChatOwner> owners){
+//        List<Chat> chats = new ArrayList<>();
+//
+//        for (ChatOwner owner: owners){
+//            chats.add(owner.getChat());
+//        }
+//
+//        return chats;
+//    }
 }

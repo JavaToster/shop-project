@@ -1,0 +1,61 @@
+.messages-main{
+  border: 3px solid black;
+  border-radius: 20px;
+  width: 500px;
+  margin-left: 700px;
+  margin-top: 200px;
+}
+
+.chat-member{
+  width: 100px;
+  height: 70px;
+  margin-left: 20px;
+}
+
+#member-name{
+  margin-bottom: 0px;
+}
+
+.messages-block{
+  margin-top: -30px;
+}
+
+.message{
+  width: max-content;
+  margin-left: 20px;
+  border: 2px solid black;
+  height: max-content;
+  margin-bottom: 10px;
+}
+
+.message-owner{
+  font-size: 12px;
+  display: inline-flex;
+  margin-left: 12px;
+  margin-bottom: 3px;
+}
+
+.message-text{
+  margin-right: 20px;
+  margin-left: 12px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+.input-text{
+  margin-left: 700px;
+  margin-top: 20px;
+}
+
+#input-text{
+  width: 400px;
+  border: 2px solid black;
+}
+
+#send-message{
+  position: absolute;
+  margin-top: 7px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+}

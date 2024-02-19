@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import org.example.PetProjectShop.projectFiles.util.Role;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +31,9 @@ public class Person {
     private Role role;
     @OneToOne(mappedBy = "person", cascade = CascadeType.REMOVE)
     private Shop shop;
+
+    @ManyToMany(mappedBy = "owners")
+    public List<Chat> chats;
 
     public Person(String username, String password){
         this.username = username;
@@ -105,5 +109,13 @@ public class Person {
 
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
+    }
+
+    public List<Chat> getChats() {
+        return chats;
     }
 }
