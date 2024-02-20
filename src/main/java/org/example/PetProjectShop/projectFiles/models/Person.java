@@ -99,6 +99,10 @@ public class Person {
         return "ROLE_SHOP";
     }
 
+    public Role getRoleOfEnumType(){
+        return this.role;
+    }
+
     public void setRole(Role role){
         this.role = role;
     }

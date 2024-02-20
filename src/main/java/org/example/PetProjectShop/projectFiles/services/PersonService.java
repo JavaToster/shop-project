@@ -31,7 +31,6 @@ public class PersonService implements UserDetailsService {
     private PersonRepository personRepository;
     private BasketRepository basketRepository;
     private FavoriteRepository favoriteRepository;
-    private ChatOwnerRepository chatOwnerRepository;
     private ChatRepository chatRepository;
     private JdbcTemplate jdbcTemplate;
 
@@ -56,15 +55,11 @@ public class PersonService implements UserDetailsService {
     }
 
     @Autowired
-    public void setChatOwnerRepository(ChatOwnerRepository chatOwnerRepository) {
-        this.chatOwnerRepository = chatOwnerRepository;
-    }
-
-    @Autowired
     public void setChatRepository(ChatRepository chatRepository) {
         this.chatRepository = chatRepository;
     }
 
+    //for authentication
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Person> person = personRepository.findByUsername(username);
@@ -79,10 +74,14 @@ public class PersonService implements UserDetailsService {
     @Transactional
     public void register(String username, String password, MultipartFile image){
         Person person = new Person(username, password);
+        //for adding image in person profile window
         person.setImageName(addImageForUser(image));
+        //set role(shop or user)
         person.setRole(Role.ROLE_USER);
+        //create new basket and favorite for him
         Basket basket = new Basket(person);
         Favorite favorite = new Favorite(person);
+        //set basket and favorite for person
         person.setBasket(basket);
         person.setFavorite(favorite);
         personRepository.save(person);
@@ -101,14 +100,8 @@ public class PersonService implements UserDetailsService {
         personRepository.delete(person);
     }
 
-    @Transactional(readOnly = true)
-    public Person get(String username){
-        return personRepository.findByUsername(username).orElse(null);
-    }
-
+    //after authentication, we can understand who it is
     public void addCookieId(HttpServletResponse response, String username){
-        Person person = personRepository.findByUsername(username).get();
-
         Cookie cookie = new Cookie("username", username);
         cookie.setMaxAge(60*60);
 
@@ -125,6 +118,8 @@ public class PersonService implements UserDetailsService {
         personRepository.save(person);
     }
 
+
+    // for get last id for person to set id for person profile image
     public int getLastIdForPerson(){
         return jdbcTemplate.query("SELECT id FROM Person ORDER BY id DESC", new RowMapper<Integer>(){
             @Override
@@ -156,15 +151,17 @@ public class PersonService implements UserDetailsService {
         return person.isPresent();
     }
 
+    //for update user type from user to shop(when user open some shop)
     @Transactional
     public void personSetShop(int id){
-        Person person = personRepository.findById(id).get();
+        Person person = personRepository.findById(id).orElse(null);
 
         person.setRole(Role.ROLE_SHOP);
 
         personRepository.save(person);
     }
 
+    //for delete cookie with user username, it's using when we log out from profile
     public void deleteCookies(HttpServletResponse httpServletResponse){
         Cookie cookie = new Cookie("user_id", "1");
 
@@ -173,28 +170,19 @@ public class PersonService implements UserDetailsService {
         httpServletResponse.addCookie(cookie);
     }
 
+    //for check is user is owner some shop
+    // if user is owner -> get "add item" button in shop window
     public boolean isOwner(String ownerUsername, String cookieUsername){
         return ownerUsername.equals(cookieUsername);
     }
 
+    //for prune code
     public int getIdByUsername(String username){
         return personRepository.findByUsername(username).orElse(null).getId();
     }
 
-    @Transactional(readOnly = true)
-    public List<Message> findMessagesByChatOfPerson(int chatId){
-        return chatRepository.findById(chatId).orElse(null).getMessages();
-    }
-
-//    @Transactional(readOnly = true)
-//    public ChatOwner findChatOwnerByChatId(int chatId, List<ChatOwner> owners){
-//        for(ChatOwner owner: owners){
-//            if(owner.getChat().getId() == chatId){
-//                return owner;
-//            }
-//        }
-//    }
-
+    //check user is member of chat
+    //if no -> redirect to profile, if yes get chat window
     @Transactional
     public boolean hasChat(String username, int chatId){
         Person person = personRepository.findByUsername(username).orElse(null);
@@ -208,6 +196,8 @@ public class PersonService implements UserDetailsService {
         return false;
     }
 
+    //for getting chats of some person
+    //when person open url "/chats", find chats by person username(get by cookie)
     @Transactional(readOnly = true)
     public List<Chat> findChatsByUsername(String username){
         Person person = personRepository.findByUsername(username).orElse(null);
@@ -215,13 +205,11 @@ public class PersonService implements UserDetailsService {
         return person.getChats();
     }
 
-//    private List<Chat> findChatsByOwners(List<ChatOwner> owners){
-//        List<Chat> chats = new ArrayList<>();
-//
-//        for (ChatOwner owner: owners){
-//            chats.add(owner.getChat());
-//        }
-//
-//        return chats;
-//    }
+    //for check person user type is shop
+    @Transactional(readOnly = true)
+    public boolean isUserOfShop(String username){
+        Person person = personRepository.findByUsername(username).orElse(null);
+
+        return person.getRoleOfEnumType() == Role.ROLE_SHOP;
+    }
 }

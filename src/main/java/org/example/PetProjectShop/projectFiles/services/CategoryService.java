@@ -26,14 +26,17 @@ public class CategoryService {
         this.shopRepository = shopRepository;
     }
 
+    //For find all categories in database
     public List<Category> findAllCategories(){
         return categoryRepository.findAll();
     }
 
+    //For find categories by shop id -> if shop has item with this category it's shop will have this category in categories list
     public List<Category> findCategoriesByShopId(int id){
         return categoryRepository.findByShops(shopRepository.findById(id).orElse(null));
     }
 
+    //For find by id
     public Category findById(int id){
         return categoryRepository.findById(id).orElse(null);
     }

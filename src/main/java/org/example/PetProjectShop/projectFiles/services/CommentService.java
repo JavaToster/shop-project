@@ -32,6 +32,7 @@ public class CommentService {
 
     @Transactional
     public void addComment(int itemId, Comment comment){
+        //add comment to item by itemId
         comment.setItem(itemRepository.findById(itemId).orElse(null));
 
         commentRepository.save(comment);

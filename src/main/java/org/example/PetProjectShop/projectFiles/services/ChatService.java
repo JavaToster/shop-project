@@ -2,8 +2,8 @@ package org.example.PetProjectShop.projectFiles.services;
 
 
 import org.example.PetProjectShop.projectFiles.models.Chat;
+import org.example.PetProjectShop.projectFiles.models.Message;
 import org.example.PetProjectShop.projectFiles.models.Person;
-import org.example.PetProjectShop.projectFiles.repositories.ChatOwnerRepository;
 import org.example.PetProjectShop.projectFiles.repositories.ChatRepository;
 import org.example.PetProjectShop.projectFiles.repositories.PersonRepository;
 import org.example.PetProjectShop.projectFiles.repositories.ShopRepository;
@@ -25,7 +25,6 @@ public class ChatService {
     private ChatRepository chatRepository;
     private PersonRepository personRepository;
     private ShopRepository shopRepository;
-    private ChatOwnerRepository chatOwnerRepository;
     private JdbcTemplate jdbcTemplate;
     @Autowired
     public void setChatRepository(ChatRepository chatRepository) {
@@ -47,29 +46,31 @@ public class ChatService {
         this.shopRepository = shopRepository;
     }
 
-    @Autowired
-    public void setChatOwnerRepository(ChatOwnerRepository chatOwnerRepository) {
-        this.chatOwnerRepository = chatOwnerRepository;
-    }
-
     public Chat findById(int chatId) {
         return chatRepository.findById(chatId).orElse(null);
     }
 
     @Transactional
     public void createNewChat(int shopId, String username) {
+        // step 1: getting shop and user by shop id and username
         Person shopOwner = shopRepository.findById(shopId).orElse(null).getPerson();
         Person user = personRepository.findByUsername(username).orElse(null);
 
+        //step 2: create new chat with shop and user as owners
         Chat chat = new Chat(shopOwner, user);
 
+        //step 3: adding this chat to shop and users chats list(Many to many)
+        //the method "addChatToList" using for prune this code, you can see below
         shopOwner.setChats(addChatToList(shopOwner.getChats(), chat));
         user.setChats(addChatToList(user.getChats(), chat));
 
+        //step 4: saving all
         chatRepository.save(chat);
         personRepository.save(user);
         personRepository.save(shopOwner);
     }
+
+    // for find last chat id in table -> I create this to redirect this new creating chat
     public int getLastChatId(){
 
         return jdbcTemplate.query("SELECT id FROM Chat ORDER BY id DESC", new RowMapper<Integer>() {
@@ -80,32 +81,19 @@ public class ChatService {
         }).stream().findAny().orElse(0);
     }
 
-//    public List<String> findMemberNameFromChatsList(String username, List<Chat> chats){
-//
-//    }
-
-    private List<Optional<Person>> findMembersFromChatList(List<Chat> chats, String username){
-        List<Optional<Person>> members = new ArrayList<>();
-
-        for(Chat chat: chats){
-            for(Person member: chat.getOwners()){
-                if(!member.getUsername().equals(username)){
-                    members.add(Optional.of(member));
-                }
-            }
-        }
-
-        return members;
-    }
-
+    //for find interlocutors from chat
+    //When you open chats window, we want to get your interlocutors
+    @Deprecated
     public List<Chat> findInterlocutorsFromChats(String username, List<Chat> chats){
         for(Chat chat: chats){
+            //delete person when he has username -> because it's you
             chat.getOwners().removeIf(owner -> owner.getUsername().equals(username));
         }
 
         return chats;
     }
 
+    //for prune code in methods
     private List<Chat> addChatToList(List<Chat> chats, Chat addingChat){
         if(chats == null){
             chats = new ArrayList<>(List.of(addingChat));
@@ -115,4 +103,10 @@ public class ChatService {
 
         return chats;
     }
+
+    @Transactional(readOnly = true)
+    public List<Message> findMessagesByChatOfPerson(int chatId){
+        return chatRepository.findById(chatId).orElse(null).getMessages();
+    }
+
 }

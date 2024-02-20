@@ -209,7 +209,7 @@ public class ShopController  {
     public String createNewChat(@PathVariable("shopId") int shopId, @RequestParam("username") String username) throws InterruptedException {
         chatService.createNewChat(shopId, username);
 
-        Thread.sleep(1000);
+        Thread.sleep(100);
 
         return "redirect:/chat/"+chatService.getLastChatId()+"/";
     }

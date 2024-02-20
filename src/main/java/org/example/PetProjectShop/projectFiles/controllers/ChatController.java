@@ -37,10 +37,10 @@ public class ChatController {
 
     @GetMapping({"/{chatId}", "/{chatId}/"})
     public String showChat(Model model, @CookieValue("username") String username, @PathVariable("chatId") int chatId){
-//        if(!personService.hasChat(username, chatId)){
-//            return "redirect:/person";
-//        }
-        model.addAttribute("messages", personService.findMessagesByChatOfPerson(chatId));
+        if(!personService.hasChat(username, chatId)){
+            return "redirect:/person";
+        }
+        model.addAttribute("messages", chatService.findMessagesByChatOfPerson(chatId));
         model.addAttribute("message", new Message());
         model.addAttribute("chatId", chatId);
 
@@ -53,6 +53,11 @@ public class ChatController {
 
         model.addAttribute("chats", chatService.findInterlocutorsFromChats(username, chatsByUser));
         model.addAttribute("chat", new Chat());
+        //if user is shop -> return username of user
+        //if user is just user -> return shop name
+        //shop can have chats with user(don't care have they shop or no)
+        //user can have chats with shop -> we return this shops name
+        model.addAttribute("userType", personService.isUserOfShop(username));
 
         chatsByUser.get(0).getOwners().get(0);
 
