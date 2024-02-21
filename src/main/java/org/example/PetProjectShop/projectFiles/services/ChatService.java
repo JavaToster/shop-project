@@ -4,6 +4,7 @@ package org.example.PetProjectShop.projectFiles.services;
 import org.example.PetProjectShop.projectFiles.models.Chat;
 import org.example.PetProjectShop.projectFiles.models.Message;
 import org.example.PetProjectShop.projectFiles.models.Person;
+import org.example.PetProjectShop.projectFiles.models.Shop;
 import org.example.PetProjectShop.projectFiles.repositories.ChatRepository;
 import org.example.PetProjectShop.projectFiles.repositories.PersonRepository;
 import org.example.PetProjectShop.projectFiles.repositories.ShopRepository;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -83,7 +85,6 @@ public class ChatService {
 
     //for find interlocutors from chat
     //When you open chats window, we want to get your interlocutors
-    @Deprecated
     public List<Chat> findInterlocutorsFromChats(String username, List<Chat> chats){
         for(Chat chat: chats){
             //delete person when he has username -> because it's you
@@ -109,4 +110,26 @@ public class ChatService {
         return chatRepository.findById(chatId).orElse(null).getMessages();
     }
 
+    // find 1 interlocutor for 1 chat
+    public String findInterlocutorFromChat(String username, Chat chat){
+        for(Person owner: chat.getOwners()){
+            if(!owner.getUsername().equals(username)){
+                return owner.getUsername();
+            }
+        }
+        return null;
+    }
+
+    // for check, if users have common chat
+    public Optional<Chat> hasUsersAChat(Person shopUser, Person user){
+        List<Chat> shopChats = shopUser.getChats();
+        List<Chat> userChats = user.getChats();
+
+        List<Chat> chatList = shopChats.stream()
+                .filter(userChats::contains)
+                .toList();
+
+        return chatList.isEmpty() ? Optional.empty() : Optional.of(chatList.get(0));
+
+    }
 }

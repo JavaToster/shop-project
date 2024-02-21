@@ -39,7 +39,7 @@ public class SecutiryConfig{
                         .permitAll()
                         .defaultSuccessUrl("/shop", true)
                         .failureUrl("/auth/login?error"))
-                        .logout(logout -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/auth/login"));
+                        .logout(logout -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/auth/login").deleteCookies("username", "JSESSIONID"));
 
         return http.build();
     }

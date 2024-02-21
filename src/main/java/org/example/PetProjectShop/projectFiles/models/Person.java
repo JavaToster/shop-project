@@ -31,9 +31,10 @@ public class Person {
     private Role role;
     @OneToOne(mappedBy = "person", cascade = CascadeType.REMOVE)
     private Shop shop;
-
     @ManyToMany(mappedBy = "owners")
-    public List<Chat> chats;
+    private List<Chat> chats;
+    @OneToMany(mappedBy = "owner")
+    private List<Message> messages;
 
     public Person(String username, String password){
         this.username = username;
@@ -121,5 +122,13 @@ public class Person {
 
     public List<Chat> getChats() {
         return chats;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }

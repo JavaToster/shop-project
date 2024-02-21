@@ -39,6 +39,7 @@
   display: inline-flex;
   margin-left: 12px;
   margin-bottom: 3px;
+  margin-right: 12px;
 }
 
 .message-text{
@@ -60,7 +61,8 @@
 
 #send-message{
   position: absolute;
-  margin-top: 7px;
+  margin-top: 0px;
+  margin-left: 10px;
   background-color: white;
   border: 2px solid black;
   border-radius: 5px;
@@ -71,23 +73,22 @@
 <body>
   <div class="messages-main">
     <div class="chat-member">
-      <h2 id="member-name">Member</h2>
+      <h2 id="member-name" th:text="${interlocutor}"></h2>
     </div>
     <div class="messages-block">
       <div class="messages">
         <div class="message" th:each="message: ${messages}">
-          <p class="message-owner">Message-owner</p>
+          <p class="message-owner" th:text="${message.getOwner().getUsername()}"></p>
           <p class="message-text" th:text="${message.getMessageText()}"></p>
         </div>
       </div>
     </div>
   </div>
   <div class="input-text">
-    <form th:method="POST" th:action="@{/chats/{id}/send-message (id=${chatId})}" th:object="${message}">
-      <textarea id="input-text" rows="2" cols="80" th:field="*{messageText}"></textarea>
+    <form th:method="POST" th:action="@{/chats/{id}/message?username={username} (id=${chatId}, username=${ownerUsername})}" th:object="${message}">
+      <input id="input-text" th:field="*{messageText}">
       <input id="send-message" type="submit" value="Отправить">
     </form>
   </div>
-
 </body>
 </html>

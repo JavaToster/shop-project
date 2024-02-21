@@ -7,7 +7,7 @@
 <body>
     <div th:each="chat: ${chats}">
         <a style="font-size: 21px;" th:if="${!userType}" th:href="@{/chats/{id} (id=${chat.getId()})}" th:text="${chat.getOwners().get(0).getShop().getShopName()}"></a>
-        <a style="font-size: 21px;" th:if="${userType}" th:href="@{/chats/{id} (id=${chat.getId()})}" th:text="${chat.getOwners().get(0).getUsername()}">Chat 1</a>
+        <a style="font-size: 21px;" th:if="${userType}" th:href="@{/chats/{id} (id=${chat.getId()})}" th:text="${chat.getOwners().get(0).getUsername()}"></a>
         <br>
     </div>
 </body>

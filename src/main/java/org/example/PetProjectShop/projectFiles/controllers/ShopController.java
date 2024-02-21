@@ -2,10 +2,7 @@ package org.example.PetProjectShop.projectFiles.controllers;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.example.PetProjectShop.projectFiles.models.Category;
-import org.example.PetProjectShop.projectFiles.models.Comment;
-import org.example.PetProjectShop.projectFiles.models.Item;
-import org.example.PetProjectShop.projectFiles.models.Shop;
+import org.example.PetProjectShop.projectFiles.models.*;
 import org.example.PetProjectShop.projectFiles.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/shop")
@@ -65,8 +63,8 @@ public class ShopController  {
         model.addAttribute("category", new Category());
         model.addAttribute("item", new Item());
 
-        personService.deleteCookies(response);
-        personService.addCookieId(response, principal.getName());
+        response.addCookie(personService.deleteCookies());
+        response.addCookie(personService.createCookie("username", principal.getName(), 60*60));
 
         return "/html/main";
     }
@@ -207,10 +205,16 @@ public class ShopController  {
 
     @PostMapping("/{shopId}/create-new-chat")
     public String createNewChat(@PathVariable("shopId") int shopId, @RequestParam("username") String username) throws InterruptedException {
+        Optional<Chat> chat = chatService.hasUsersAChat(shopService.findById(shopId).getPerson(), personService.findByUsername(username));
+
+        if(chat.isPresent()){
+            return "redirect:/chats/"+chat.get().getId();
+        }
+
         chatService.createNewChat(shopId, username);
 
         Thread.sleep(100);
 
-        return "redirect:/chat/"+chatService.getLastChatId()+"/";
+        return "redirect:/chats/"+chatService.getLastChatId()+"/";
     }
 }

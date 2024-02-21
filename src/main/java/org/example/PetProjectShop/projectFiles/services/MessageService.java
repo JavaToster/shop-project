@@ -21,4 +21,8 @@ public class MessageService {
     public void addMessage(Message message){
         messageRepository.save(message);
     }
+
+    public boolean messageIsEmpty(Message message){
+        return message.getMessageText().isEmpty();
+    }
 }

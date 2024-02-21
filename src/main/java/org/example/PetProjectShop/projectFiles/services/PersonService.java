@@ -101,11 +101,12 @@ public class PersonService implements UserDetailsService {
     }
 
     //after authentication, we can understand who it is
-    public void addCookieId(HttpServletResponse response, String username){
-        Cookie cookie = new Cookie("username", username);
-        cookie.setMaxAge(60*60);
+    public Cookie createCookie(String cookieName, String cookieValue, int age){
+        Cookie cookie = new Cookie(cookieName, cookieValue);
 
-        response.addCookie(cookie);
+        cookie.setMaxAge(age);
+
+        return cookie;
     }
 
     @Transactional(readOnly = true)
@@ -162,12 +163,12 @@ public class PersonService implements UserDetailsService {
     }
 
     //for delete cookie with user username, it's using when we log out from profile
-    public void deleteCookies(HttpServletResponse httpServletResponse){
-        Cookie cookie = new Cookie("user_id", "1");
+    public Cookie deleteCookies(){
+        Cookie cookie = new Cookie("username", "1");
 
         cookie.setMaxAge(0);
 
-        httpServletResponse.addCookie(cookie);
+        return cookie;
     }
 
     //for check is user is owner some shop

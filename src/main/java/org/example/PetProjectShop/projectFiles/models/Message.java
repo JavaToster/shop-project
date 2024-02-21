@@ -18,6 +18,10 @@ public class Message {
     @JoinColumn(name = "chat_id")
     private Chat chat;
 
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private Person owner;
+
     public int getId() {
         return id;
     }
@@ -40,5 +44,13 @@ public class Message {
 
     public void setChat(Chat chat) {
         this.chat = chat;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 }
